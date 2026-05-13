@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WellNotes - Premium Digital Notebook
 
-## Getting Started
+WellNotes is a high-performance, aesthetically premium digital notebook application designed for iPad and tablet-first experiences. It combines the tactile feel of handwriting with the power of rich text and AI.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Realistic Notebooks**: High-quality textures and 3D animations for a tactile feel.
+- **Template System**: Fully customizable covers and paper styles (Blank, Dot, Lined, Graph).
+- **Hybrid Editor**: Seamlessly switch between handwriting with Apple Pencil-like feel and structured rich text.
+- **Smart Organization**: Category-based sidebar with nested folders and drag-and-drop.
+- **AI-Powered**: Smart summaries, flashcard generation, and contextual assistance.
+- **Cloud Sync**: Real-time synchronization across all your devices.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Getting Started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisites
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Node.js 18+
+- npm or yarn
 
-## Learn More
+### Installation
 
-To learn more about Next.js, take a look at the following resources:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ramandeep727/Notesapp.git
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-## Deploy on Vercel
+## 🛠️ Tech Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Frontend**: Next.js 15, TypeScript, Tailwind CSS
+- **Animations**: Framer Motion
+- **Editor**: Tiptap & Fabric.js
+- **State**: Zustand
+- **Backend**: Supabase
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📄 License
+
+This project is licensed under the MIT License.
+
