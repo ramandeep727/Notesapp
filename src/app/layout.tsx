@@ -2,23 +2,24 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Sidebar } from "@/components/layout/Sidebar";
+import { FloatingToolbar } from "@/components/layout/FloatingToolbar";
+import { TemplateModal } from "@/components/layout/TemplateModal";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
 
 export const metadata: Metadata = {
-  title: "Lumina Notes | Premium Digital Notebook",
-  description: "The ultimate digital notebook for students and professionals. Handwritten notes, PDF annotations, and AI-powered productivity.",
+  title: "WellNotes | Premium Digital Notebook",
+  description: "The ultimate digital notebook for students and professionals.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Lumina Notes",
+    title: "WellNotes",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#6366f1",
+  themeColor: "#3b82f6",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -31,14 +32,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable} antialiased`}>
-      <body className="flex min-h-screen bg-slate-50/50 dark:bg-slate-950">
+    <html lang="en" className={`${inter.variable} antialiased`}>
+      <body className="flex min-h-screen bg-white dark:bg-black">
         <Sidebar />
-        <main className="flex-1 h-screen overflow-auto relative">
+        <main className="flex-1 h-screen overflow-auto relative bg-[#ffffff] dark:bg-[#000000]">
+          <FloatingToolbar />
           {children}
+          <TemplateModal />
         </main>
       </body>
     </html>
   );
 }
+
 

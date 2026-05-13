@@ -12,207 +12,176 @@ import {
   MoreHorizontal,
   FileText,
   Layers,
-  Plus
+  Plus,
+  Sparkles,
+  Settings2
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { AISidebar } from '@/components/layout/AISidebar';
-import { Sparkles } from 'lucide-react';
 
 export default function NotebookPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = React.use(params);
   const router = useRouter();
   const [mode, setMode] = useState<'handwriting' | 'richtext'>('handwriting');
-  const [paperStyle, setPaperStyle] = useState<'ruled' | 'grid' | 'dots' | 'blank'>('ruled');
+  const [paperStyle, setPaperStyle] = useState<'blank' | 'dotted' | 'lined' | 'graph'>('blank');
+  const [paperColor, setPaperColor] = useState('#ffffff');
+  const [paperSpacing, setPaperSpacing] = useState(1);
   const [aiSidebarOpen, setAiSidebarOpen] = useState(false);
-  const [pageBrowserOpen, setPageBrowserOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
-  const [tabs, setTabs] = useState([
-    { id: '1', title: 'UPSC History Notes', active: true },
-    { id: '2', title: 'Ancient India Map', active: false },
+  const [tabs] = useState([
+    { id: '1', title: 'Reasoning Notes', active: true },
+    { id: '2', title: 'Daily Practice', active: false },
   ]);
 
   return (
-    <div className="h-screen flex flex-col">
-      {/* Top Navigation */}
-      <header className="glass px-6 py-3 flex items-center justify-between z-20">
+    <div className="h-screen flex flex-col bg-[#f0f0f2] dark:bg-[#000000]">
+      {/* Premium Header */}
+      <header className="bg-white/80 dark:bg-black/80 backdrop-blur-md px-6 py-2 flex items-center justify-between z-20 border-b border-gray-200 dark:border-gray-800">
         <div className="flex items-center gap-4 flex-1">
           <button 
             onClick={() => router.push('/')}
-            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
+            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors text-gray-500"
           >
             <ChevronLeft size={20} />
           </button>
           
-          {/* Wellnotes Style Tabs */}
-          <div className="flex items-center gap-1 overflow-x-auto max-w-xl">
+          <div className="flex items-center gap-1">
             {tabs.map((tab, i) => (
               <div 
                 key={tab.id}
                 onClick={() => setActiveTab(i)}
                 className={cn(
-                  "px-4 py-2 rounded-t-xl text-sm font-medium cursor-pointer transition-all flex items-center gap-2 min-w-[150px] border-b-2",
+                  "px-4 py-2 rounded-xl text-[13px] font-semibold cursor-pointer transition-all flex items-center gap-2 min-w-[120px]",
                   activeTab === i 
-                    ? "bg-white dark:bg-slate-900 border-brand-primary text-brand-primary shadow-[0_-4px_10px_rgba(0,0,0,0.05)]" 
-                    : "text-slate-400 hover:text-slate-600 border-transparent"
+                    ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white" 
+                    : "text-gray-400 hover:text-gray-600"
                 )}
               >
-                <FileText size={14} />
+                <FileText size={14} className={activeTab === i ? "text-blue-500" : ""} />
                 <span className="truncate">{tab.title}</span>
               </div>
             ))}
-            <button className="p-2 text-slate-400 hover:text-brand-primary">
+            <button className="p-2 text-gray-400 hover:text-blue-500">
               <Plus size={16} />
             </button>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl border border-slate-200 dark:border-slate-800">
+        {/* Mode Switcher */}
+        <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl mx-8">
           <button
             onClick={() => setMode('handwriting')}
             className={cn(
-              "flex items-center gap-2 px-4 py-1.5 rounded-xl transition-all text-sm font-medium",
+              "flex items-center gap-2 px-4 py-1.5 rounded-lg transition-all text-[13px] font-bold",
               mode === 'handwriting' 
-                ? "bg-white dark:bg-slate-700 shadow-sm text-brand-primary" 
-                : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                ? "bg-white dark:bg-gray-700 shadow-sm text-blue-600" 
+                : "text-gray-500 hover:text-gray-700"
             )}
           >
             <PenTool size={16} />
-            Handwriting
+            Draw
           </button>
           <button
             onClick={() => setMode('richtext')}
             className={cn(
-              "flex items-center gap-2 px-4 py-1.5 rounded-xl transition-all text-sm font-medium",
+              "flex items-center gap-2 px-4 py-1.5 rounded-lg transition-all text-[13px] font-bold",
               mode === 'richtext' 
-                ? "bg-white dark:bg-slate-700 shadow-sm text-brand-primary" 
-                : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                ? "bg-white dark:bg-gray-700 shadow-sm text-blue-600" 
+                : "text-gray-500 hover:text-gray-700"
             )}
           >
             <Type size={16} />
-            Rich Text
+            Write
           </button>
         </div>
 
-        <div className="flex items-center gap-3">
-          <button className="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors text-slate-600 dark:text-slate-400">
+        <div className="flex items-center gap-2">
+          <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors text-gray-500">
             <Share2 size={20} />
           </button>
           <button 
-            onClick={() => setPageBrowserOpen(!pageBrowserOpen)}
-            className={cn(
-              "p-2.5 rounded-xl transition-colors",
-              pageBrowserOpen ? "bg-brand-primary/10 text-brand-primary" : "hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400"
-            )}
-          >
-            <Layout size={20} />
-          </button>
-          <button className="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors text-slate-600 dark:text-slate-400">
-            <Layers size={20} />
-          </button>
-          <button 
-            onClick={() => setAiSidebarOpen(true)}
-            className="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors text-brand-primary"
+             onClick={() => setAiSidebarOpen(true)}
+             className="p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-xl transition-colors text-blue-500"
           >
             <Sparkles size={20} />
           </button>
-          <div className="w-px h-6 bg-slate-200 dark:bg-slate-800" />
-          <button 
-            onClick={() => {
-              const btn = document.activeElement as HTMLButtonElement;
-              btn.innerText = "Saved!";
-              setTimeout(() => btn.innerText = "Save Note", 2000);
-            }}
-            className="bg-brand-primary text-white px-5 py-2.5 rounded-xl font-semibold shadow-lg shadow-brand-primary/20 hover:scale-105 active:scale-95 transition-all"
-          >
-            Save Note
+          <div className="w-px h-6 bg-gray-200 dark:bg-gray-800 mx-2" />
+          <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors text-gray-500">
+            <MoreHorizontal size={20} />
           </button>
         </div>
       </header>
 
-      {/* Main Content */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Page Browser (Wellnotes style) */}
-        <AnimatePresence>
-          {pageBrowserOpen && (
+      {/* Content Area */}
+      <div className="flex-1 overflow-hidden relative">
+        <AnimatePresence mode="wait">
+          {mode === 'handwriting' ? (
             <motion.div
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: 240, opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              className="glass border-r flex flex-col"
+              key="handwriting"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="h-full"
             >
-              <div className="p-4 border-b font-bold text-xs uppercase tracking-widest text-slate-400">Pages</div>
-              <div className="flex-1 overflow-auto p-4 space-y-4">
-                {[1, 2, 3, 4, 5].map(p => (
-                  <div key={p} className={cn(
-                    "aspect-[3/4] rounded-lg border-2 transition-all cursor-pointer overflow-hidden",
-                    p === 4 ? "border-brand-primary ring-2 ring-brand-primary/20" : "border-slate-100 dark:border-slate-800 hover:border-slate-300"
-                  )}>
-                    <div className="w-full h-full bg-white dark:bg-slate-900 relative">
-                       <div className="absolute inset-0 paper-ruled opacity-50" />
-                       <div className="absolute bottom-2 right-2 text-[10px] font-bold text-slate-300">{p}</div>
-                    </div>
-                  </div>
-                ))}
-                <button className="w-full aspect-[3/4] rounded-lg border-2 border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center text-slate-400 hover:text-brand-primary transition-colors">
-                   <Plus size={24} />
-                   <span className="text-[10px] font-bold mt-2">ADD PAGE</span>
-                </button>
+              <HandwritingCanvas 
+                paperStyle={paperStyle} 
+                paperColor={paperColor}
+                paperSpacing={paperSpacing}
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="richtext"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="h-full bg-white dark:bg-black p-8 overflow-auto"
+            >
+              <div className="max-w-4xl mx-auto">
+                 <RichTextEditor />
               </div>
             </motion.div>
           )}
         </AnimatePresence>
 
-        <main className="flex-1 overflow-hidden relative bg-slate-50/50 dark:bg-slate-900/50">
-          <AnimatePresence mode="wait">
-          {mode === 'handwriting' ? (
-            <motion.div
-              key="handwriting"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              className="h-full"
-            >
-              <HandwritingCanvas paperStyle={paperStyle} />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="richtext"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="h-full"
-            >
-              <RichTextEditor />
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Paper Style Quick Toggle (Floating) */}
-        <div className="absolute right-8 bottom-8 flex flex-col gap-2">
-           <div className="glass p-2 rounded-2xl flex flex-col gap-1 shadow-2xl">
-              {(['ruled', 'grid', 'dots', 'blank'] as const).map(style => (
+        {/* Floating Paper Settings */}
+        <div className="absolute left-8 bottom-8 flex flex-col gap-3 z-30">
+           <div className="glass-toolbar p-2 rounded-2xl flex flex-col gap-2 shadow-2xl border border-white/20">
+              {(['blank', 'dotted', 'lined', 'graph'] as const).map(style => (
                 <button
                   key={style}
                   onClick={() => setPaperStyle(style)}
                   className={cn(
                     "w-10 h-10 rounded-xl flex items-center justify-center transition-all",
                     paperStyle === style 
-                      ? "bg-brand-primary text-white" 
-                      : "hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400"
+                      ? "bg-blue-500 text-white shadow-lg scale-110" 
+                      : "hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400"
                   )}
-                  title={style.charAt(0).toUpperCase() + style.slice(1)}
                 >
-                  <FileText size={18} />
+                  <div className={cn(
+                    "w-5 h-5 border-2 rounded-sm",
+                    style === 'blank' ? "border-current" : 
+                    style === 'dotted' ? "border-dotted border-current" :
+                    style === 'lined' ? "border-current bg-[linear-gradient(transparent_50%,currentColor_50%)] bg-[length:100%_4px]" :
+                    "bg-[linear-gradient(90deg,currentColor_1px,transparent_1px),linear-gradient(currentColor_1px,transparent_1px)] bg-[length:4px_4px]"
+                  )} />
                 </button>
               ))}
+              <div className="h-px bg-gray-200 dark:bg-gray-800 mx-2 my-1" />
+              <button 
+                onClick={() => setPaperColor(paperColor === '#ffffff' ? '#fefaf0' : paperColor === '#fefaf0' ? '#1c1c1e' : '#ffffff')}
+                className="w-10 h-10 rounded-xl flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 transition-all"
+              >
+                 <Settings2 size={20} />
+              </button>
            </div>
         </div>
 
         <AISidebar isOpen={aiSidebarOpen} onClose={() => setAiSidebarOpen(false)} />
-      </main>
       </div>
     </div>
   );
 }
+
