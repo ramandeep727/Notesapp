@@ -73,39 +73,43 @@ export const HandwritingCanvas = ({ paperStyle = 'ruled' }: Props) => {
 
     if (activeTool === 'pen') {
       canvas.isDrawingMode = true;
-      canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-      canvas.freeDrawingBrush.color = color;
-      canvas.freeDrawingBrush.width = brushSize;
-      canvas.freeDrawingBrush.strokeLineCap = tipStyle;
+      const brush = new fabric.PencilBrush(canvas);
+      brush.color = color;
+      brush.width = brushSize;
+      brush.strokeLineCap = tipStyle;
       if (lineStyle !== 'solid') {
-        canvas.freeDrawingBrush.strokeDashArray = lineStyle === 'dashed' ? [10, 5] : [2, 2];
+        brush.strokeDashArray = lineStyle === 'dashed' ? [10, 5] : [2, 2];
       } else {
-        canvas.freeDrawingBrush.strokeDashArray = [];
+        brush.strokeDashArray = [];
       }
+      canvas.freeDrawingBrush = brush;
     } else if (activeTool === 'highlighter') {
       canvas.isDrawingMode = true;
-      canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-      canvas.freeDrawingBrush.color = `${color}44`; 
-      canvas.freeDrawingBrush.width = brushSize * 5;
+      const brush = new fabric.PencilBrush(canvas);
+      brush.color = `${color}44`; 
+      brush.width = brushSize * 5;
+      canvas.freeDrawingBrush = brush;
     } else if (activeTool === 'laser') {
        canvas.isDrawingMode = true;
-       canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-       canvas.freeDrawingBrush.color = '#ef4444';
-       canvas.freeDrawingBrush.width = 4;
-       // Mock laser behavior: clear path after 1 second
+       const brush = new fabric.PencilBrush(canvas);
+       brush.color = '#ef4444';
+       brush.width = 4;
+       canvas.freeDrawingBrush = brush;
        canvas.on('path:created', (e: any) => {
           setTimeout(() => canvas.remove(e.path), 1000);
        });
     } else if (activeTool === 'tape') {
        canvas.isDrawingMode = true;
-       canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-       canvas.freeDrawingBrush.color = '#fde047'; // Tape yellow
-       canvas.freeDrawingBrush.width = 40;
+       const brush = new fabric.PencilBrush(canvas);
+       brush.color = '#fde047'; 
+       brush.width = 40;
+       canvas.freeDrawingBrush = brush;
     } else if (activeTool === 'eraser') {
       canvas.isDrawingMode = true;
-      canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-      canvas.freeDrawingBrush.color = '#fdfdfb'; 
-      canvas.freeDrawingBrush.width = brushSize * 10;
+      const brush = new fabric.PencilBrush(canvas);
+      brush.width = brushSize * 10;
+      brush.globalCompositeOperation = 'destination-out';
+      canvas.freeDrawingBrush = brush;
     } else {
       canvas.isDrawingMode = false;
     }
